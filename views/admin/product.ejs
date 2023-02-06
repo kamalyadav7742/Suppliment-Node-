@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+
+      
+    </style>
+  </head>
+  <body>
+
+    
+    <%-include('../common/navbar.ejs') %>
+   
+     
+    <% if(data.length>0){%>
+    <div class="container-fluid mt-5 ">
+        
+        <div class="row mt-5 ">
+            <% for(var i=0; i<data.length; i++){
+                %>
+            
+           
+           
+
+          <div class="col-md-3 mt-5">
+
+              <img src="<%= data[i].file%>" class="card-img-top scal" alt="...">
+                <p class="text-muted " id="p13"><%= data[i].product%></p>
+                <p><%= data[i].name%></p>
+                <span class="fa fa-star checked"><%= data[i].rating%></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <hr>
+                <p><%= data[i].price%> <span class="text-muted">(<%= data[i].gram%>)</span></p>
+          </div>
+  
+         
+        <%} %>
+        <% } else { %>
+          no Record Found
+          <%} %>
+
+
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
+    
+    
+    
+
+   

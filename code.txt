@@ -1,0 +1,331 @@
+
+const mongoose=require('mongoose');
+const { callbackPromise } = require('nodemailer/lib/shared');
+
+mongoose.set("strictQuery", true)
+var reg=mongoose.connect("mongodb+srv://kamalyadav:kamal7742kn@cluster0.bv0sckq.mongodb.net/dobber?retryWrites=true&w=majority",
+
+{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+
+.then(()=> console.log("connect Sucessfully.."))
+.catch((err)=> console.log(err));
+module.exports=reg;
+
+
+
+
+
+
+
+
+
+
+var mongoose=require('./config.js')
+
+var mongoose=require("mongoose")
+
+const listSchema=new mongoose.Schema({
+    
+    email:{
+        type:String,
+        required:true
+
+    },
+
+    password:{
+    type:String,
+    required:true
+   }
+})
+
+const Playlist=new mongoose.model("login",listSchema);
+
+module.exports=Playlist;
+
+
+
+
+
+
+
+//////////////////////////////
+
+
+const express=require("express")
+
+const app=express();
+
+const Login=require("./login-schema.js")
+
+const contact=require("./contact-schema.js")
+
+const signup=require("./signup-schema.js")
+
+const file=require("./file-schema.js")
+
+const bodyParser=require('body-parser');
+
+const { Schema } = require("mongoose");
+
+
+
+const router= express.Router();
+
+
+app.set('view engine','ejs');
+
+
+app.get('/',(req,res)=>{
+
+    res.render('index');
+
+})
+
+app.get('/index',(req,res)=>{
+
+    res.render('index');
+
+})
+
+app.get('/contact',(req,res)=>{
+
+    res.render('contact');
+
+})
+
+app.get('/dashboard',(req,res)=>{
+
+    res.render('admin/dashboard');
+
+})
+
+// app.get('/viewcontact',(req,res)=>{
+
+//     res.render('admin/viewcontact');
+
+// })
+
+app.get('/left',(req,res)=>{
+
+    res.render('admin/left');
+
+})
+
+app.get('/addproduct',(req,res)=>{
+
+    res.render('admin/addproduct');
+
+})
+
+app.get('/view',(req,res)=>{
+
+    res.render('admin/view');
+
+})
+
+// app.get('/signup',(req,res)=>{
+
+//     res.render('admin/signup');
+
+// })
+
+app.get('/Aboutus',(req,res)=>{
+
+    res.render('Aboutus');
+
+})
+
+// login forrm
+
+router.post('/login',(req,res)=>{
+
+    var loginform={
+        email:req.body.email,
+        password:req.body.password,
+    };
+
+    var loginpost= new Login(loginform);
+    loginpost.save(function(err){
+
+        if(err){
+            console.log("error to save data");
+        }
+        else{
+            console.log("data saved successfully",loginpost);
+        }
+    });
+
+    res.send("done");
+
+
+})
+
+// find login data
+
+
+router.get('/ourlogin', function(req,res){
+
+    Login.find(function(err,data){
+ 
+         if(err){
+             console.log(err);
+         }
+         else{
+             res.render('admin/login',{data:data});
+             console.log(data);
+         }
+     });
+ });
+ 
+
+
+//contact us form
+
+router.post('/contact',(req,res)=>{
+
+    var contactform={
+        email:req.body.email,
+        name:req.body.name
+    };
+
+    var contactpost= new contact(contactform);
+    contactpost.save(function(err){
+
+        if(err){
+            console.log("error to save data");
+        }
+        else{   
+            console.log("data saved successfully",contactpost);
+        }
+    });
+
+    res.send("done");
+
+
+})
+
+
+// data store contact
+
+router.get('/viewcontact', function(req,res){
+
+    contact.find(function(err,data){
+ 
+         if(err){
+             console.log(err);
+         }
+         else{
+             res.render('admin/viewcontact',{data:data});
+             console.log(data);
+         }
+     });
+ });
+
+
+
+// signup form
+
+router.post('/signup',(req,res)=>{
+
+    var signupform={
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
+        email:req.body.email,   
+        password:req.body.password,
+        confirmpassword:req.body.confirmpassword,
+    };
+
+    var signuppost= new signup(signupform);
+    signuppost.save(function(err){
+
+        if(err){
+            console.log("error to save data");
+        }
+        else{
+            console.log("data saved successfully",signuppost);
+        }
+    });
+
+    res.send("done");
+
+
+})
+
+
+// data store
+
+router.get('/signup', function(req,res){
+
+   signup.find(function(err,data){
+
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render('admin/signup',{data:data});
+            console.log(data);
+        }
+    });
+});
+
+
+
+
+
+//  file uplode
+
+ router.post('/file1',(req,res)=>{
+
+    var fileform={
+        name:req.body.name,
+        password:req.body.password,
+        file:req.body.file,
+    };  
+
+    var filepost= new file(fileform);
+    filepost.save(function(err){
+
+        if(err){    
+            console.log("error to save data");
+        }
+        else{
+            console.log("data saved successfully",filepost);
+        }
+    });
+
+    res.send("done");
+
+
+})
+
+// data get on view contact
+
+router.get('/viewproduct', function(req,res){
+
+    file.find(function(err,data){
+ 
+         if(err){
+             console.log(err);
+         }
+         else{
+             res.render('admin/view',{data:data});
+             console.log(data);
+         }
+     });
+ });
+ 
+
+app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use('/',router);
+    app.listen(3500,()=>console.log('listeee on 3500'));
+
+
+
+
+    
